@@ -1,0 +1,58 @@
+body{
+	background-color: lightblue;
+}
+img{
+	max-width: 100%;
+	height: auto;
+	float: left;
+}
+#thumbnails{
+	border:1px solid #e1e1e1;
+	border-radius: 2px;
+}
+#thumbnails:hover{
+	box-shadow: 0 0 2px 1px rgba(0, 140, 198, 0.5);
+}
+h1{
+	text-align: justify;
+}
+
+#ecs{
+	display:inline-block;
+	text-align: justify;
+	border: 3px;
+	padding: auto;
+	height:200px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	float:left;
+}
+#images{
+	float:left;
+}
+#reflection{
+	display:inline-block;
+	float: left;
+	width: auto;
+	height:420px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+#textBlock{
+	background-color: #e1e1e1;
+	color: black;
+}
+#debugDiv{
+	width:10px;
+	height:10px;
+	
+	
+}
+button{
+	margin-top: 20px;
+	line-height: 60px;
+	font-weight: bold;
+	padding: 0 40px;
+	background: salmon;
+	border: none;
+}

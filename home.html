@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<Title>Home</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div id="debugDiv"><p id="debugString"></p></div>
+<h1>Implementing a graphics framework within an ECS</h1>
+<div text-align = "justify" id = "why">
+<h2>Why ECS?</h2>
+<p id="textBlock">
+Data Oriented Design (DoD) has become a popular approach to the challenge of game development over the last couple of years.<br>
+It's focus on data processing means that the data is decoupled from logic processing and can mean that unessasary memory allocation is avoided.<br>
+A popular form of DoD comes in the form of the Entity Component System, with Unity Engine and Unreal Engine adopting their own forms of ECS. This is a stripping down of definitions and draws a hard line between Components and Systems.
+Components are pure data. Systems access, process and change that data. An immediate benefit to programmers with a system like this is that it becomes easily maintainable and highly modularised.
+Alongside this is the benefit of more efficient processing. Allowing large numbers of entities to be processed in a small amount of time.
+</p>
+</div>
+<div id="ecs">
+	<h1>Entity Component System</h1>
+	<p id="textBlock">The aim of the artefact was to gain an understanding of how Entity Component Systems work and implement one in C++.
+	<br>The first hurdle was begining to understand how the archetecture fit together.</p>
+	<h2>Entities</h2>
+	<p id="textBlock">In the simplest of terms, an entity is an index into an array of components.
+	<br>Components need to be managed correctly in order to keep data tightly packed. For this reason, when an entity is removed, its components are cleared and the components in the last entity are moved into that, now empty, position. Finally the last entity is deleted.</p>
+	<h2>Components</h2>
+	<p id="textBlock">
+	Components are structs of, typically, Plain Old Data. This helps to keep the data stored tightly in memory, allowing for fast searching and less memory being wasted.
+	<br>Components are registered within management to give them a "type" (an index used for systems.)
+	</p>
+	<h2>Systems</h2>
+	<p id="textBlock">
+	Logic happens within systems. Each system subscribes to components via registering the component type. Any component passed to a system must have all components that system requires.
+	<br>Systems are where meshes are rendered, physics would be updated and inputs would be handled during the main loop. 
+	</p>
+
+</div>
+<div id="images">
+<a target="_blank" href="images/class-diagram.png" alt="ECS class diagram">
+	<img src="images/class-diagram-thumbnail.png" alt="ECS class diagram. Click to expand." id="thumbnails">
+</a>
+</div>
+<div id = "reflection">
+<h2>My implementation</h2>
+<p id="textBlock">My implementation closely followed <a href="https://austinmorlan.com/posts/entity_component_system/">Austin Morlans guide</a> with only one change. Austin's version has its "coordinator" be a global variable, which I try to avoid. This meant that I had to implement a function to return component pointers, and make every system take the coordinator as an argument.
+<br>The main blockers for me when implementing an ECS comes down to understanding the nessecity of each part. It's easy to understand the concept of Entities, Components and Systems but what's harder is understanding how to manage them.
+</p>
+<h2>Signatures, Managers and the Coordinator</h2>
+<p id="textBlock">
+The signature is very similar to entities, in that they're indexes into an array, however this array contains component types. This enables systems to subscribe to components by returning their type into a signature array.
+<br>This does lead to some overhead with registering components in order to initialise their type, and a bit more overhead by creating a signature to register systems to.
+<br>For me this was a tough point to manage as the minutiae of initialising components and systems was hard to remember. In an effort to make it easier I created some wrapper code for reducing the amount of code in initialisation. Placing this inside the application class wasn't the best idea and in future a "Coordinator-Helper" class might be better suited, or streamlining these functions in the actual coordinator class.
+<a target="_blank" href="images/wrapper-code.png" alt = "Wrapper Code">
+<img src="images/wrapper-code-thumbnail.png" alt="Wrapper Code" id="thumbnail"></a></p>
+<p id="textBlock">The managers were responsible for managing any data associated with the ECS. This meant storing entities, components and systems in a way that made easy to access while tightly packed and, in the case of the component manager, contiguous.
+<br>The component manager was the hardest to understand as it was responsible for contiguous data is somewhat a new concept to me but this became a key point of learning.
+ Adding an entity is reletively simple. Creating a new index in the component array that's accessed by the entity. However removing an entity is a much more complex task.
+</p>
+</div>
+<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
